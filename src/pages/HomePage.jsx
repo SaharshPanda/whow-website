@@ -6,6 +6,7 @@ import {
 import { styled } from '@mui/system';
 import { useSpring } from '@react-spring/web';
 import { coursesData } from '../data/courses.js';
+import { useMediaQuery, useTheme } from '@mui/material';
 import logo from "../assets/Whow.gif";
 import goat from "../assets/GOAT.gif";
 import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, CircularProgress } from '@mui/material';
@@ -84,6 +85,10 @@ const HomePage = () => {
   const handleClickOpen = () => {
     setOpen(true);
   };
+  
+  // Inside your component
+const theme = useTheme();
+const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm')); // Detect small screens
 
   // Function to handle closing the dialog
   const handleClose = () => {
@@ -239,26 +244,98 @@ const HomePage = () => {
 
       {/* Dialog for Course Preview */}
       <Dialog
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="preview-dialog-title"
-        aria-describedby="preview-dialog-description"
+  open={open}
+  onClose={handleClose}
+  aria-labelledby="roadmap-dialog-title"
+  aria-describedby="roadmap-dialog-description"
+  maxWidth="md"
+  fullWidth
+>
+  <DialogTitle id="roadmap-dialog-title">Course Roadmap Preview</DialogTitle>
+  <DialogContent>
+    <DialogContentText id="roadmap-dialog-description">
+      {/* Responsive flex container, switches to column layout on small screens */}
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: isSmallScreen ? 'column' : 'row',  // Column layout for small screens
+          justifyContent: 'space-around',
+          alignItems: 'center',
+          marginTop: 4
+        }}
       >
-        <DialogTitle id="preview-dialog-title">Preview Course Roadmap</DialogTitle>
-        <DialogContent>
-          <DialogContentText id="preview-dialog-description">
-            Here’s a detailed preview of what you'll learn during the course.
-          </DialogContentText>
-          <Box sx={{ width: '100%', textAlign: 'center', marginTop: 2 }}>
-            <CircularProgress />
-          </Box>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose} color="primary">
-            Close
-          </Button>
-        </DialogActions>
-      </Dialog>
+        {/* 1. Basic Training */}
+        <Box sx={{ textAlign: 'center', marginBottom: isSmallScreen ? 4 : 0 }}>
+          <CircularProgress
+            variant="determinate"
+            value={100}
+            size={isSmallScreen ? 60 : 80}  // Adjust size on small screens
+            thickness={5}
+            sx={{ color: 'primary.main' }}
+          />
+          <Typography variant="body1" sx={{ marginTop: 1 }}>
+            1-Month Basic Training
+          </Typography>
+        </Box>
+
+        {/* 2. Program-Specific Training */}
+        <Box sx={{ textAlign: 'center', marginBottom: isSmallScreen ? 4 : 0 }}>
+          <CircularProgress
+            variant="determinate"
+            value={100}
+            size={isSmallScreen ? 60 : 80}
+            thickness={5}
+            sx={{ color: 'secondary.main' }}
+          />
+          <Typography variant="body1" sx={{ marginTop: 1 }}>
+            Program-Specific Training
+          </Typography>
+        </Box>
+
+        {/* 3. Opportunity Selection */}
+        <Box sx={{ textAlign: 'center', marginBottom: isSmallScreen ? 4 : 0 }}>
+          <CircularProgress
+            variant="determinate"
+            value={100}
+            size={isSmallScreen ? 60 : 80}
+            thickness={5}
+            sx={{ color: 'success.main' }}
+          />
+          <Typography variant="body1" sx={{ marginTop: 1 }}>
+            Opportunity Selection
+          </Typography>
+        </Box>
+      </Box>
+
+      <Typography variant="body1" sx={{ marginTop: 4 }}>
+        Here's a quick overview of your learning journey with us:
+      </Typography>
+      <Typography variant="h6" gutterBottom sx={{ marginTop: 2 }}>
+        1. Basic Training
+      </Typography>
+      <Typography variant="body2">
+        A 1-month basic training that lays the foundation of core skills needed for the program.
+      </Typography>
+      <Typography variant="h6" gutterBottom sx={{ marginTop: 2 }}>
+        2. Program-Specific Training
+      </Typography>
+      <Typography variant="body2">
+        In-depth training focused on specific skills required for your chosen field.
+      </Typography>
+      <Typography variant="h6" gutterBottom sx={{ marginTop: 2 }}>
+        3. Opportunity Selection
+      </Typography>
+      <Typography variant="body2">
+        Once you complete the training, you will be able to choose opportunities based on your skills.
+      </Typography>
+    </DialogContentText>
+  </DialogContent>
+  <DialogActions>
+    <Button onClick={handleClose} color="primary">
+      Close
+    </Button>
+  </DialogActions>
+</Dialog>
     </Container>
   );
 };
